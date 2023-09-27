@@ -28,8 +28,20 @@ function init()
     player1 = new Player("player1", 0xffff00, new THREE.Vector2(50, 0), 0);
     scene.add(player1.graphic);
 
+    enemy1 = new Enemy(new THREE.Vector2(-200, 50), 0);
+    scene.add(enemy1.graphic);
+
+    enemy2 = new Enemy(new THREE.Vector2(-200, -50), 0);
+    scene.add(enemy2.graphic);
+
     light1 = new Light("sun", 0xffffff, "0,0,340");
+
     scene.add(light1);
+}
+
+function destroy() {
+    renderer.dispose();
+    renderer.forceContextLoss();
 }
 
 function Ground(color, size_x, size_y, nb_tile)
@@ -48,6 +60,10 @@ function Ground(color, size_x, size_y, nb_tile)
         for (y = minY; y <= maxY; y = y+sizeOfTileY){
 
             color = colors[Math.floor(Math.random()*colors.length)];
+
+            if (x == sizeOfTileX && y == 0) {
+                color = 0x0000ff;
+            }
        
             if (0x000000 != color)
             {
@@ -64,9 +80,9 @@ function Ground(color, size_x, size_y, nb_tile)
     }
 }
 
-function Lighht(name, color, position)
+function Light(name, color, position)
 {
-    pointLight = new THREE.PointLight(color, 50, 550);
+    pointLight = new THREE.AmbientLight({color: color})
 
     pointLight.position.x = position.split(',')[0];
     pointLight.position.y = position.split(',')[1];

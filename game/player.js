@@ -25,6 +25,8 @@ Player.prototype.dead = function () {
         //Nettoyage de la div container
         $("#container").html("");
         jQuery('#'+this.name+' >.life').text("Tu es mort !");
+        // remove WARNING: Too many active WebGL contexts. Oldest context will be lost.
+        destroy();
         init();
 }
 
@@ -51,8 +53,8 @@ Player.prototype.displayInfo = function () {
 }
 
 Player.prototype.turnRight = function (angle) {
-    this.direction += angle;
-    this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), +angle);
+    this.direction -= angle;
+    this.graphic.rotateOnAxis(new THREE.Vector3(0,0,-1), +angle);
 };
 
 Player.prototype.turnLeft = function (angle) {

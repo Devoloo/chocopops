@@ -4,7 +4,8 @@
     <title>EPITA 2023 - SIGL</title>
     <style>
         body {
-            background: #000000; 
+            background: #000000;
+            color: white;
         }
 
         #container {
@@ -16,6 +17,7 @@
         #player1 {
                 margin : auto; 
                 text-align: center;
+                color: white;
         }
 
         .life {
@@ -37,6 +39,7 @@
 <script src="js/OrbitControls.js"></script>
 <script src="js/THREEx.KeyboardState.js"></script>
 <script src="game/player.js"></script>
+<script src="game/enemy.js"></script>
 <script src="game/graphic.js"></script>
 <script src="game/physic.js"></script>
 <script src="game/shoot.js"></script>
@@ -45,8 +48,7 @@
     var container, scene, camera, renderer, controls, stats;
     var keyboard = new THREEx.KeyboardState();
     var clock = new THREE.Clock();
-    var player1,
-        player2;
+    var player1, player2;
     var WIDTH = 600,
         HEIGHT = 400;
 

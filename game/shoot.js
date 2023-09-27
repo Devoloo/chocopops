@@ -28,6 +28,31 @@ function shoot()
     {
         player1.bullets[i].position.x += moveDistance * Math.cos(player1.bullets[i].angle);
         player1.bullets[i].position.y += moveDistance * Math.sin(player1.bullets[i].angle);
+
+        // collision between bullet and enemy
+        if (Math.abs(player1.bullets[i].position.x - enemy1.graphic.position.x) <= 10 &&
+            Math.abs(player1.bullets[i].position.y - enemy1.graphic.position.y) <= 10)
+        {
+            scene.remove(enemy1.graphic);
+            enemy1.alive = false;
+            enemy1.dead();
+            scene.remove(player1.bullets[i]);
+            player1.bullets.splice(i, 1);
+            i--;
+            continue;
+        }
+
+        if (Math.abs(player1.bullets[i].position.x - enemy2.graphic.position.x) <= 10 &&
+            Math.abs(player1.bullets[i].position.y - enemy2.graphic.position.y) <= 10)
+        {
+            scene.remove(enemy2.graphic);
+            enemy2.alive = false;
+            enemy2.dead();
+            scene.remove(player1.bullets[i]);
+            player1.bullets.splice(i, 1);
+            i--;
+            continue;
+        }
     }
 
 }
@@ -63,6 +88,8 @@ function player_collision()
 
     if ( x > WIDTH )
         player1.graphic.position.x -= x - WIDTH;
+    if ( x < 0 )
+        player1.graphic.position.x -= x;
     if ( y < 0 )
         player1.graphic.position.y -= y;
     if ( y > HEIGHT )
@@ -77,6 +104,8 @@ function player_falling()
     var sizeOfTileY = HEIGHT / nb_tile;
     var x = player1.graphic.position.x | 0;
     var y = player1.graphic.position.y | 0;
+    var xEnemy = enemy1.graphic.position.x | 0;
+    var yEnemy = enemy1.graphic.position.y | 0;
     var length = noGround.length;
     var element = null;
 
@@ -88,13 +117,29 @@ function player_falling()
         var mtileX = (element[0] + sizeOfTileX) | 0;
         var mtileY = (element[1] + sizeOfTileY) | 0;
 
-        if ((x > tileX)
-            && (x < mtileX)
-            && (y > tileY) 
-            && (y < mtileY))
+        if ((Math.abs(x - xEnemy) <= 20)
+            && (Math.abs(y - yEnemy) <= 20))
         {
-           player1.dead();
+            player1.life--;
+            // tp player to start
+            player1.graphic.position.x = 150;
+            player1.graphic.position.y = 0;
+            console.log(player1.life);
+        }
+
+        if (player1.life == 0)
+        {
+            player1.dead();
+            break;
+        }
+
+        if ((x >= tileX)
+            && (x <= mtileX)
+            && (y >= tileY) 
+            && (y <= mtileY))
+        {
+            player1.dead();
+            break;
         }
     }
-
 }
